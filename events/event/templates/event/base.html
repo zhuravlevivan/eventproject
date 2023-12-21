@@ -2,16 +2,19 @@
 {% load static %}
 <html>
 <head>
-  <title>{% block title %}{% endblock %}</title>
-  <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
 </head>
 <body>
 <div id="content">
-  {% block content %}
-  {% endblock %}
+    {% block content %}
+
+    {% endblock %}
 </div>
-<div id="sidebar"><h2>My blog</h2>
-  <p>This is event calendar.</p>
+<div id="sidebar"><h2>EVENTS</h2>
+    <p>Календарь событий</p>
+    <p><a href="{% url 'event:event_add' %}">Добавить событие</a></p>
+
 </div>
 </body>
 </html>
