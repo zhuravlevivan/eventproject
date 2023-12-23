@@ -12,7 +12,7 @@
         </h2>
         <p><a href="{% url 'event:event_update' event.id %}">&#9998;</a> |
             <a href="{% url 'event:event_delete' event.id %}">&#10006;</a></p>
-        <p>{{ event.description|truncatewords:15|safe }}</p>
+        <p>{{ event.description|safe|truncatewords:15 }}</p>
         <p class="date">{{ event.date_time }}</p>
         <p>{{ event.location }}</p>
         <p></p>
