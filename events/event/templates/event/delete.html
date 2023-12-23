@@ -1,0 +1,20 @@
+{% extends "event/base.html" %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <div>
+
+        <form method="post">{% csrf_token %}
+            <p>Удалить событие "{{ event.title }}"?</p>
+            <p>Содержание:</p>
+            <p>{{ event.description|truncatewords:15|safe }}</p>
+            <p><button type="submit">Подтвердить удаление</button></p>
+            <p><button type="button" onclick="window.history.back();">Отмена</button></p>
+        </form>
+
+
+    </div>
+
+    <p><a href="{% url 'event:event_list' %}">На главную</a></p>
+{% endblock %}
