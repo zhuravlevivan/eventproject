@@ -19,3 +19,9 @@ class AddEventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = '__all__'
+
+
+class ContactForm(forms.Form):
+    from_email = forms.EmailField(label='Email', required=True)
+    subject = forms.CharField(label='Тема', required=True)
+    message = forms.CharField(label='Сообщение', widget=forms.Textarea, required=True)

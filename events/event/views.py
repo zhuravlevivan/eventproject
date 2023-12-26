@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+# from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import DetailView, ListView
 from django.urls import reverse_lazy
@@ -6,20 +6,6 @@ from .forms import AddEventForm
 from .models import Event
 
 
-# def event_list(request):
-#     events = Event.objects.all()
-#     context = {
-#         'events': events
-#     }
-#     return render(request, 'event/list.html', context)
-
-
-# def event_detail(request, id):
-#     event = get_object_or_404(Event, id=id)
-#     context = {
-#         'event': event
-#     }
-#     return render(request, 'event/detail.html', context)
 class EventList(ListView):
     model = Event
     template_name = 'event/list.html'
@@ -30,24 +16,6 @@ class EventList(ListView):
 class ShowEvent(DetailView):
     model = Event
     template_name = 'event/detail.html'
-
-# def event_add(request):
-#     events = Event.objects.all()
-#     context = {
-#         'events': events
-#     }
-#     if request.method == 'POST':
-#         form = AddEventForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             return render(request, 'event/list.html', context=context)
-#     else:
-#         form = AddEventForm()
-#     context = {
-#         'title': 'Добавить событие',
-#         'form': form,
-#     }
-#     return render(request, 'event/add.html', context=context)
 
 
 class AddEvent(CreateView):
@@ -70,3 +38,34 @@ class DeleteEvent(DeleteView):
     success_url = reverse_lazy('event:event_list')
 
 
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from .forms import ContactForm
+from events.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
+
+
+def contact_view(request):
+    # если метод GET, вернем форму
+    if request.method == 'GET':
+        form = ContactForm()
+    elif request.method == 'POST':
+        # если метод POST, проверим форму и отправим письмо
+        form = ContactForm(request.POST)
+        if form.is_valid():
+            subject = form.cleaned_data['subject']
+            from_email = form.cleaned_data['from_email']
+            message = form.cleaned_data['message']
+            try:
+                send_mail(f'{subject} от {from_email}', message,
+                          DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL)
+            except BadHeaderError:
+                return HttpResponse('Ошибка в теме письма.')
+            return redirect('success')
+    else:
+        return HttpResponse('Неверный запрос.')
+    return render(request, "event/email.html", {'form': form})
+
+
+def success_view(request):
+    return HttpResponse('Приняли! Спасибо за вашу заявку.')
