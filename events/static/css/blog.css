@@ -89,10 +89,9 @@ input[type=submit] {
     font-weight:bold;
     font-size:12px;
     color:#666;
-<<<<<<< HEAD
+
 }
-=======
-}
+
 
 .list-pages {
 	text-align: center;
@@ -131,4 +130,3 @@ input[type=submit] {
 .list-pages .page-num-selected:hover {
 	box-shadow: none;
 }
->>>>>>> ec902fe0502d67f6ad184876a66d12335d6fb514
