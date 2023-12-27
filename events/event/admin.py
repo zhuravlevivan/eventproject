@@ -3,11 +3,8 @@ from django.contrib import admin
 from django import forms
 from .models import Event
 
-from ckeditor_uploader.widgets import CKEditorUploadingWidget
-
 
 class EventAdminForm(forms.ModelForm):
-    description = forms.CharField(label='Описание', widget=CKEditorUploadingWidget())
 
     class Meta:
         model = Event

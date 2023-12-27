@@ -4,11 +4,10 @@ from django_ckeditor_5.fields import CKEditor5Field
 from django.urls import reverse
 
 
-
 class Event(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название')
     # description = models.TextField(verbose_name='Описание')
-    description = CKEditor5Field('Text', config_name='extends')
+    description = CKEditor5Field('Содержимое', config_name='extends')
     date_time = models.DateTimeField(verbose_name='Дата')
     location = models.CharField(max_length=100, verbose_name='Место')
 
@@ -26,6 +25,3 @@ class Event(models.Model):
     def get_absolute_url(self):
         return reverse('event:event_detail', kwargs={'event_detail_id': self.id})
 
-
-class UploadFiles(models.Model):
-    file = models.FileField(upload_to='uploads/%Y/%m/%d/', verbose_name='')

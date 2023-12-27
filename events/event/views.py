@@ -5,6 +5,12 @@ from django.urls import reverse_lazy
 from .forms import AddEventForm
 from .models import Event
 
+from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from .forms import ContactForm
+from events.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
+
 
 class EventList(ListView):
     model = Event
@@ -19,6 +25,7 @@ class ShowEvent(DetailView):
 
 
 class AddEvent(CreateView):
+    model = Event
     form_class = AddEventForm
     template_name = 'event/add.html'
     success_url = reverse_lazy('event:event_list')
@@ -36,13 +43,6 @@ class DeleteEvent(DeleteView):
     template_name = 'event/delete.html'
     context_object_name = 'event'
     success_url = reverse_lazy('event:event_list')
-
-
-from django.core.mail import send_mail, BadHeaderError
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
-from .forms import ContactForm
-from events.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 
 
 def contact_view(request):

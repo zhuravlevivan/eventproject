@@ -5,8 +5,8 @@
 {% block content %}
   <h1>{{ event.title }}</h1>
   <p class="date">{{ event.date_time }}</p>
+<p><a href="{% url 'event:event_update' event.id %}">Редактировать событие</a></p>
   {{ event.description|safe }}
-{#    фильтр safe для корректного вывода отформатированного текста#}
 <p><a href="{% url 'event:event_update' event.id %}">Редактировать событие</a></p>
 <p><a href="{% url 'event:event_delete' event.id %}">Удалить событие</a></p>
 <p><a href="{% url 'event:event_list' %}">На главную</a></p>
