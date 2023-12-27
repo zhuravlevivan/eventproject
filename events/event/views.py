@@ -33,6 +33,7 @@ class AddEvent(CreateView):
 
 class UpdateEvent(UpdateView):
     model = Event
+    # form_class = AddEventForm
     fields = '__all__'
     template_name = 'event/edit.html'
     success_url = reverse_lazy('event:event_list')

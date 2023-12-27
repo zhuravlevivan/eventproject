@@ -1,8 +1,5 @@
 from django import forms
-from django_ckeditor_5.widgets import CKEditor5Widget
-
 from .models import Event
-from ckeditor.fields import RichTextField
 
 
 class EventForm(forms.ModelForm):
@@ -16,8 +13,14 @@ class AddEventForm(forms.ModelForm):
     # title = forms.CharField(max_length=100, label='Название')
     # description = forms.CharField(widget=forms.Textarea, label='Описание')
     # date_time = forms.DateTimeField(widget=forms.SelectDateWidget, label='Дата')
+    date_time = forms.DateTimeField(widget=forms.SplitDateTimeWidget(
+        date_attrs={'type': 'date'},
+        time_attrs={'type': 'time'}
+    ))
+
     # # time_of_day = forms.DateTimeField(widget=forms.TimeInput, label='Время')
     # location = forms.CharField(max_length=100, label='Место')
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # it is required to set it False,
