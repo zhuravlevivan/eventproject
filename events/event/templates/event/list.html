@@ -3,15 +3,50 @@
 {% block title %}Events{% endblock %}
 
 {% block content %}
-  <h1>Events</h1>
-  {% for event in events %}
-    <h2>
-      <a href="{% url 'event:event_detail' event.id %}">
-        {{ event.title }}
-      </a>
-    </h2>
-    <p>{{ event.description }}</p>
-    <p class="date">{{ event.date_time }}</p>
-    <p>{{ event.location }}</p>
-  {% endfor %}
+    <h1>Events</h1>
+    {% for event in events %}
+        <h2>
+            <a href="{% url 'event:event_detail' event.id %}">
+                {{ event.title }}
+            </a>
+        </h2>
+        <p><a href="{% url 'event:event_update' event.id %}">&#9998;</a> |
+            <a href="{% url 'event:event_delete' event.id %}">&#10006;</a></p>
+        <p>{{ event.description|safe|truncatewords:15 }}</p>
+        <p class="date">{{ event.date_time }}</p>
+        <p>{{ event.location }}</p>
+        <p></p>
+
+    {% endfor %}
+{% endblock %}
+
+{% block navigation %}
+    {% if page_obj.has_other_pages %}
+        <nav class="list-pages">
+            <ul>
+                {% if page_obj.has_previous %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.previous_page_number }}">&lt;</a>
+                    </li>
+                {% endif %}
+
+                {% for p in paginator.page_range %}
+                    {% if page_obj.number == p %}
+                        <li class="page-num page-num-selected">{{ p }}</li>
+                    {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
+                        <li class="page-num">
+                            <a href="?page={{ p }}">{{ p }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li class="page-num">
+                        <a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    {% endif %}
 {% endblock %}
