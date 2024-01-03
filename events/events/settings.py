@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'event.apps.EventConfig',
+    'tinymce',
 
 ]
 
@@ -112,9 +113,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_DIR = os.path.join(BASE_DIR, 'static')
-# STATICFILES_DIRS = [STATIC_DIR]
-STATIC_ROOT = (BASE_DIR / 'static')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [STATIC_DIR]
+# STATIC_ROOT = (BASE_DIR / 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -124,5 +125,66 @@ MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# TINYMCE_DEFAULT_CONFIG = {
+#     'theme': 'silver',
+#     'width': '100%',
+#     'height': '400',
+#     'plugins': [
+#         'advlist',
+#         'autolink',
+#         'link',
+#         'image',
+#         'lists',
+#         'media',
+#         'code',
+#         'table',
+#         'charmap',
+#         'paste',
+#         'wordcount',
+#     ],
+#     'toolbar': 'undo redo | bold italic underline | alignleft aligncenter alignright | bullist numlist | outdent '
+#                'indent |'
+#                'image media | forecolor backcolor | link | code | table',
+# }
 
+TINYMCE_DEFAULT_CONFIG = {
+    "entity_encoding": "raw",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": 'print preview paste importcss searchreplace autolink autosave save code visualblocks visualchars '
+               'fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc '
+               'insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap emoticons '
+               'quickbars',
+    "toolbar": "fullscreen preview | undo redo | bold italic forecolor backcolor | formatselect | image link | "
+    "alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | fontsizeselect "
+    "emoticons | ",
+    "custom_undo_redo_levels": 50,
+    "quickbars_insert_toolbar": False,
+    "file_picker_callback": """function (cb, value, meta) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "file");
+        if (meta.filetype == "image") {
+            input.setAttribute("accept", "image/*");
+        }
+        if (meta.filetype == "media") {
+            input.setAttribute("accept", "video/*");
+        }
 
+        input.onchange = function () {
+            var file = this.files[0];
+            var reader = new FileReader();
+            reader.onload = function () {
+                var id = "blobid" + (new Date()).getTime();
+                var blobCache = tinymce.activeEditor.editorUpload.blobCache;
+                var base64 = reader.result.split(",")[1];
+                var blobInfo = blobCache.create(id, file, base64);
+                blobCache.add(blobInfo);
+                cb(blobInfo.blobUri(), { title: file.name });
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }""",
+    "content_style": "body { font-family:Roboto,Helvetica,Arial,sans-serif; font-size:14px }",
+    'imagebrowser_directory': 'media/',
+
+}
