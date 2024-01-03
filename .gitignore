@@ -4,3 +4,4 @@ __pycache__
 /backend/study/fixtures/
 /backend/study/templates/
 /events/event/migrations/
+/events/db.sqlite3
