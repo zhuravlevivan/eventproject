@@ -3,4 +3,4 @@ version: '3.8'
 services:
   app:
     image: django
-    command: python manage.py runserver 0.0.0.0:7000
+    command: python events/manage.py runserver 0.0.0.0:7000
