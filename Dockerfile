@@ -8,7 +8,7 @@ COPY requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
-#COPY . /app
+COPY . /app
 
 RUN python events/manage.py makemigrations --settings=events.settings --no-input
 
