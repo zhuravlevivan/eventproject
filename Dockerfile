@@ -10,4 +10,6 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
+COPY . /app
+
 RUN python /events/manage.py migrate --settings=events.settings --no-input
