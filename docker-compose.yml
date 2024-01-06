@@ -1,6 +1,8 @@
-version: '3.8'
+version: '3.9'
 
 services:
   app:
     image: django
+    ports:
+      - "7000:7000"
     command: python events/manage.py runserver 0.0.0.0:7000
