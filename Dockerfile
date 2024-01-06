@@ -12,4 +12,4 @@ COPY . .
 
 COPY . /app
 
-RUN python /events/manage.py migrate --settings=events.settings --no-input
+RUN python manage.py migrate --settings=events.settings --no-input
